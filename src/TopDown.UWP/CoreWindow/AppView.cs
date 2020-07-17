@@ -25,6 +25,7 @@ namespace TopDown.UWP
 
         public void SetWindow(CoreWindow window)
         {
+            window.PointerCursor = null;
             _renderer = new Renderer(window);
             UWPInput input = new UWPInput(window);
             _game = new Game(input);
@@ -49,7 +50,7 @@ namespace TopDown.UWP
                 if (current > _targetGame)
                 {
                     int delta = (int)(current - _lastGameUpdate);
-                    _game?.Update(delta);
+                    _game?.Update(delta / 1000.0f);
                     _targetGame = current + GameInterval;
                     _lastGameUpdate = current;
                 }

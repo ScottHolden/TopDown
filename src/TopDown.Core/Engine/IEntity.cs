@@ -3,6 +3,7 @@
     public interface IEntity
     {
         void Draw(ICanvas canvas);
-        void Update(int timestep);
+        void Update(float timestep);
+        bool IsAlive { get; }
     }
 }

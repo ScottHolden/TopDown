@@ -4,6 +4,8 @@
     {
         LightBlue,
         Yellow,
-        Red
+        Red,
+        Blue,
+        Green
     }
 }

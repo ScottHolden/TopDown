@@ -1,54 +1,50 @@
 ﻿using System;
 using System.Numerics;
+using TopDown.Core.Engine;
 
 namespace TopDown.Core
 {
-    public class KeyboardDot : IEntity
+    public class KeyboardDot : VelocityEntity
     {
-        public Vector2 Pos => _pos;
-        private Vector2 _pos;
         private readonly IInput _input;
-        private const float Speed = 10;
+        private const float Speed = 400;
         public KeyboardDot(IInput input)
         {
             _input = input;
-            _pos = new Vector2(100, 100);
+            this.Position = new Vector2(500, 500);
         }
 
-        public void Draw(ICanvas canvas)
+        public override void Draw(ICanvas canvas)
         {
-            canvas.DrawCircle(_pos, 5.0f, GameColor.LightBlue);
+            canvas.DrawCircle(this.Position, 20.0f, GameColor.LightBlue);
         }
 
-        public void Update(int timestep)
+        public override void Update(float timestep)
         {
-            float distance = Speed * timestep / 16.0f;
-
-            var kbVector = GetKeyboardAsVector();
-            kbVector = Vector2.Multiply(distance, kbVector);
-            _pos = Vector2.Add(_pos, kbVector);
+            this.Velocity = Vector2.Multiply(Speed, GetKeyboardAsVector());
+            base.Update(timestep);
         }
 
         private Vector2 GetKeyboardAsVector()
         {
-            var keyboardState = _input.GetKeyboardState();
+            var keyboardState = _input.GetInputState();
 
             float x = 0.0f;
             float y = 0.0f;
 
-            if (keyboardState.HasFlag(KeyboardKey.W))
+            if (keyboardState.HasFlag(InputButton.W))
             {
                 y -= 1;
             }
-            if (keyboardState.HasFlag(KeyboardKey.S))
+            if (keyboardState.HasFlag(InputButton.S))
             {
                 y += 1;
             }
-            if (keyboardState.HasFlag(KeyboardKey.A))
+            if (keyboardState.HasFlag(InputButton.A))
             {
                 x -= 1;
             }
-            if (keyboardState.HasFlag(KeyboardKey.D))
+            if (keyboardState.HasFlag(InputButton.D))
             {
                 x += 1;
             }

@@ -1,28 +1,26 @@
 ﻿using System.Numerics;
+using TopDown.Core.Engine;
 
 namespace TopDown.Core
 {
-    public class MouseDot : IEntity
+    public class MouseDot : PositionEntity
     {
-        public Vector2 Pos => _pos;
-        private Vector2 _pos;
         private readonly IInput _input;
         public MouseDot(IInput input)
         {
             _input = input;
-            _pos = new Vector2(100, 100);
+            this.Position = new Vector2(100, 100);
         }
 
-        public void Draw(ICanvas canvas)
+        public override void Draw(ICanvas canvas)
         {
-            canvas.DrawCircle(_pos, 2.5f, GameColor.Red);
+            GameColor color = _input.GetInputState().HasFlag(InputButton.LeftMouse) ?
+                                    GameColor.Red :
+                                    GameColor.Blue;
+            canvas.DrawCircle(this.Position, 10f, color);
         }
 
-        public void Update(int timestep)
-        {
-            var mousePosition = _input.GetMousePosition();
-            _pos.X = mousePosition.X;
-            _pos.Y = mousePosition.Y;
-        }
+        public override void Update(float timestep) => 
+            this.Position = _input.GetMousePosition();
     }
 }
